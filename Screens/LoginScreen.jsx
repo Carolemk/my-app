@@ -10,6 +10,7 @@ import {
   Modal,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { login, register, getPetInfo } from "../api/apiService"; // Importe as funções do apiService
 
 export default function LoginScreen() {
   const navigation = useNavigation();
@@ -18,19 +19,35 @@ export default function LoginScreen() {
   const [showResetPassword, setShowResetPassword] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (email && senha) {
-      navigation.navigate("Home"); // Navega para a tela Home (a ser criada)
+      try {
+        const response = await login({ email, senha });
+        if (response.success) {
+          navigation.navigate("Home"); // Navega para a tela Home (a ser criada)
+        } else {
+          alert("Email ou senha inválidos.");
+        }
+      } catch (error) {
+        alert("Erro ao fazer login. Tente novamente.");
+      }
     } else {
       alert("Preencha todos os campos.");
     }
   };
 
-  const handleResetPassword = () => {
+  const handleResetPassword = async () => {
     if (resetEmail) {
-      alert("Instruções de redefinição de senha enviadas para o email.");
-      setShowResetPassword(false);
-      setResetEmail("");
+      try {
+        await api.post("/reset-password", { email: resetEmail });
+        alert("Instruções de redefinição de senha enviadas para o email.");
+        setShowResetPassword(false);
+        setResetEmail("");
+      } catch (error) {
+        alert(
+          "Erro ao enviar instruções de redefinição de senha. Tente novamente."
+        );
+      }
     } else {
       alert("Por favor, insira seu email.");
     }
@@ -55,7 +72,6 @@ export default function LoginScreen() {
             onChangeText={setEmail}
             keyboardType="email-address"
             placeholderTextColor="#888"
-            borderColor="transparent" // Adicionado
           />
           <TextInput
             style={styles.input}
@@ -64,7 +80,6 @@ export default function LoginScreen() {
             onChangeText={setSenha}
             secureTextEntry
             placeholderTextColor="#888"
-            borderColor="transparent" // Adicionado
           />
           <TouchableOpacity style={styles.button} onPress={handleLogin}>
             <Text style={styles.buttonText}>Login</Text>
@@ -100,7 +115,6 @@ export default function LoginScreen() {
               onChangeText={setResetEmail}
               keyboardType="email-address"
               placeholderTextColor="#888"
-              borderColor="transparent" // Adicionado
             />
             <TouchableOpacity
               style={styles.modalButton}
@@ -134,7 +148,7 @@ const styles = StyleSheet.create({
   },
   innerContainer: {
     width: "100%",
-    maxWidth: 400, // Ajuste a largura máxima conforme necessário
+    maxWidth: 400,
     alignItems: "center",
   },
   logo: {
@@ -145,25 +159,25 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 25,
     textAlign: "center",
-    marginTop: 1,
+    marginTop: 10,
     marginBottom: 20,
   },
   input: {
-    height: 50, // Aumenta a altura do input
+    height: 50,
     width: "100%",
     borderColor: "gray",
     borderWidth: 1,
-    marginBottom: 15, // Aumenta o espaço entre os inputs
+    marginBottom: 15,
     paddingHorizontal: 15,
     color: "white",
-    borderRadius: 5, // Adiciona bordas arredondadas para um visual mais moderno
+    borderRadius: 5,
   },
   button: {
     backgroundColor: "#4CAF50",
     padding: 15,
     alignItems: "center",
     marginTop: 20,
-    borderRadius: 5, // Adicionado
+    borderRadius: 5,
     width: "100%",
   },
   buttonText: {
@@ -207,7 +221,7 @@ const styles = StyleSheet.create({
     padding: 15,
     alignItems: "center",
     marginTop: 10,
-    borderRadius: 5, // Adicionado
+    borderRadius: 5,
     width: "100%",
   },
 });

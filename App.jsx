@@ -3,6 +3,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import CadastroScreen from "./Screens/CadastroScreen";
 import LoginScreen from "./Screens/LoginScreen";
+import HomeScreen from "./Screens/HomeScreen";
+import PetInfoScreen from "./Screens/PetInfoScreen"; // Certifique-se de que este import está correto
 import { View, Text, StyleSheet } from "react-native";
 
 const Stack = createStackNavigator();
@@ -25,7 +27,6 @@ export default function App() {
           headerTintColor: "#000000",
           headerTitleAlign: "center",
           headerTitle: route.name !== "Login" ? () => <CustomHeader /> : null,
-          headerBackTitleVisible: false,
         })}
       >
         <Stack.Screen
@@ -34,6 +35,8 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen name="Cadastro" component={CadastroScreen} />
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="PetInfo" component={PetInfoScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

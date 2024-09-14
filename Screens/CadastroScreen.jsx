@@ -10,6 +10,7 @@ import {
   Platform,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
 
 export default function CadastroScreen() {
   const navigation = useNavigation();
@@ -19,10 +20,21 @@ export default function CadastroScreen() {
   const [telefone, setTelefone] = useState("");
   const [senha, setSenha] = useState("");
 
-  const handleCadastro = () => {
+  const handleCadastro = async () => {
     if (nome && email && cpf && senha) {
-      alert("Cadastro realizado com sucesso!");
-      navigation.navigate("Login");
+      try {
+        await axios.post("http://localhost:3000/register", {
+          nome,
+          email,
+          cpf,
+          telefone,
+          senha,
+        });
+        alert("Cadastro realizado com sucesso!");
+        navigation.navigate("Login");
+      } catch (error) {
+        alert("Erro ao realizar cadastro. Tente novamente.");
+      }
     } else {
       alert("Preencha todos os campos.");
     }
@@ -30,8 +42,8 @@ export default function CadastroScreen() {
 
   return (
     <KeyboardAvoidingView
-      style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
     >
       <ScrollView
         contentContainerStyle={styles.content}
@@ -39,9 +51,10 @@ export default function CadastroScreen() {
       >
         <View style={styles.innerContainer}>
           <Text style={styles.title}>Cadastro</Text>
+
           <TextInput
             style={styles.input}
-            placeholder="Nome"
+            placeholder="Nome completo"
             value={nome}
             onChangeText={setNome}
             placeholderTextColor="#888"
@@ -92,31 +105,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#333333",
-    justifyContent: "center",
-    alignItems: "center",
   },
   content: {
     flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
-    width: "100%",
     padding: 20,
   },
   innerContainer: {
     width: "100%",
-    maxWidth: 400, // Ajuste a largura máxima conforme necessário
+    maxWidth: 400,
     alignItems: "center",
   },
   title: {
-    fontSize: 30,
-    fontWeight: "bold",
     color: "white",
-    textAlign: "center",
-    marginBottom: 30,
+    fontSize: 30,
+    marginBottom: 20,
   },
   input: {
-    height: 60, // Aumenta a altura do input em 10 pixels
-    width: 350,
+    height: 50,
+    width: "100%",
     borderColor: "gray",
     borderWidth: 1,
     marginBottom: 15,
