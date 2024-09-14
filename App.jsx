@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import CadastroScreen from "./Screens/CadastroScreen";
@@ -17,26 +18,49 @@ const CustomHeader = () => (
 );
 
 export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
+
+  useEffect(() => {
+    // Verifica o token armazenado
+    const checkLoginStatus = async () => {
+      const token = await AsyncStorage.getItem("authToken");
+      if (token) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+    };
+
+    checkLoginStatus();
+  }, []);
+
+  if (isLoggedIn === null) {
+    // Renderiza uma tela de carregamento enquanto verifica a autenticação
+    return (
+      <View>
+        <Text>Carregando...</Text>
+      </View>
+    );
+  }
+
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={({ route }) => ({
-          headerStyle: {
-            backgroundColor: "#ffffff",
-          },
-          headerTintColor: "#000000",
-          headerTitleAlign: "center",
-          headerTitle: route.name !== "Login" ? () => <CustomHeader /> : null,
-        })}
-      >
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name="Cadastro" component={CadastroScreen} />
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="PetInfo" component={PetInfoScreen} />
+      <Stack.Navigator>
+        {isLoggedIn ? (
+          <>
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="PetInfo" component={PetInfoScreen} />
+          </>
+        ) : (
+          <>
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen name="Cadastro" component={CadastroScreen} />
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

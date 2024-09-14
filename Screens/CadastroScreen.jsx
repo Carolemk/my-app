@@ -52,6 +52,11 @@ export default function CadastroScreen() {
         <View style={styles.innerContainer}>
           <Text style={styles.title}>Cadastro</Text>
 
+          {/* Novo texto adicionado */}
+          <Text style={styles.subtitle}>
+            "Ter um pet ajuda a combater depressão"
+          </Text>
+
           <TextInput
             style={styles.input}
             placeholder="Nome completo"
@@ -120,7 +125,14 @@ const styles = StyleSheet.create({
   title: {
     color: "white",
     fontSize: 30,
+    marginBottom: 10,
+  },
+  // Estilo para o novo texto
+  subtitle: {
+    color: "lightgray",
+    fontSize: 16,
     marginBottom: 20,
+    textAlign: "center",
   },
   input: {
     height: 50,

@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 15,
     paddingHorizontal: 15,
-    color: "white",
+    color: "#000", // Mudei a cor das letras para preto
     borderRadius: 5,
   },
   picker: {
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 15,
     borderRadius: 5,
-    color: "white",
+    color: "#000000", // Mantendo a cor branca para o picker
   },
   button: {
     backgroundColor: "#4CAF50",

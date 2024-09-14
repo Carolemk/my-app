@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   ScrollView,
   Text,
@@ -24,7 +25,11 @@ export default function LoginScreen() {
       try {
         const response = await login({ email, senha });
         if (response.success) {
-          navigation.navigate("Home"); // Navega para a tela Home (a ser criada)
+          // Armazena o token no AsyncStorage
+          await AsyncStorage.setItem("authToken", response.token);
+
+          // Navega para a tela Home
+          navigation.navigate("Home");
         } else {
           alert("Email ou senha inválidos.");
         }
