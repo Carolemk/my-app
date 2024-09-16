@@ -2,9 +2,9 @@
 
 ## Descrição do Projeto
 
-O **Pet Tracker** é um projeto desenvolvido para ajudar donos de pets a gerenciar as vacinas de seus animais de estimação. Além da funcionalidade atual de controle de vacinas, o projeto tem planos futuros de adicionar recursos como agendamento de consultas veterinárias e localizações de pet shops próximos.
+O **VegPet** é um projeto desenvolvido para ajudar donos de pets a gerenciar as vacinas de seus animais de estimação. Além da funcionalidade atual de controle de vacinas, o projeto tem planos futuros de adicionar recursos como agendamento de consultas veterinárias e localizações de pet shops próximos.
 
-![Pet Tracker](assets/app.png)
+![VegPet](assets/app.png)
 
 ## Estrutura do Projeto
 
@@ -18,8 +18,7 @@ Antes de começar, certifique-se de ter as seguintes ferramentas instaladas:
 - **npm** ou **Yarn**: Gerenciador de pacotes Node.js (instalado automaticamente com o Node.js)
 - **Expo CLI**: [Instalar Expo CLI](https://docs.expo.dev/get-started/installation/)
 - **Git**: [Baixar e instalar Git](https://git-scm.com/)
-
-## Instalação e Execução
+- **SQLite**: [Baixar e instalar SQLite](https://www.sqlite.org/download.html)
 
 ### Clonar o Repositório
 
