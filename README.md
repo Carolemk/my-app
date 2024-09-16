@@ -4,7 +4,7 @@
 
 O **Pet Tracker** é um projeto desenvolvido para ajudar donos de pets a gerenciar as vacinas de seus animais de estimação. Além da funcionalidade atual de controle de vacinas, o projeto tem planos futuros de adicionar recursos como agendamento de consultas veterinárias e localizações de pet shops próximos.
 
-![Pet Tracker](my-app/assets/eapp.png)
+![Pet Tracker](my-app/assets/app.png)
 
 ## Estrutura do Projeto
 
