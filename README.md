@@ -23,6 +23,28 @@ Antes de começar, certifique-se de ter as seguintes ferramentas instaladas:
 Clone o repositório para sua máquina e navegue até o diretório do projeto:
 
 ```bash
-git clone https://github.com/Carolemk/my-app.git
+git clone https://github.com/Carolemk/my-app
+
+```
+
+### Após clonar iniciar o projeto
+
+```
 cd my-app
+```
+
+#### Iniciando o Front end
+
+```
+npx expo start
+```
+
+#### Iniciando o Back End
+
+Em outro terminal abra o Back end
+
+```
+cd backend
+
+npm start
 ```
