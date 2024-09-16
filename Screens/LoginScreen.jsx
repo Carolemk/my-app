@@ -11,7 +11,7 @@ import {
   Modal,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { login, register, getPetInfo } from "../api/apiService"; // Importe as funções do apiService
+import { login } from "../api/apiService"; // Importe a função de login do apiService
 
 export default function LoginScreen() {
   const navigation = useNavigation();
@@ -27,6 +27,9 @@ export default function LoginScreen() {
         if (response.success) {
           // Armazena o token no AsyncStorage
           await AsyncStorage.setItem("authToken", response.token);
+
+          // Exibe uma mensagem de sucesso e orienta o usuário a recarregar a página
+          alert("Login feito com sucesso! Por favor, recarregue a página.");
 
           // Navega para a tela Home
           navigation.navigate("Home");
@@ -212,7 +215,7 @@ const styles = StyleSheet.create({
   modalContainer: {
     width: "80%",
     padding: 20,
-    backgroundColor: "#ffffff",
+    backgroundColor: "#000000",
     borderRadius: 10,
     alignItems: "center",
   },

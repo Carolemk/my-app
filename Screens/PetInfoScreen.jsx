@@ -6,45 +6,21 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
-  Image,
   Picker,
-  Button,
   Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import * as ImagePicker from "expo-image-picker";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function PetInfoScreen() {
   const navigation = useNavigation();
-  const [photo, setPhoto] = useState(null);
   const [name, setName] = useState("");
   const [adoptionDate, setAdoptionDate] = useState("");
   const [favoriteActivity, setFavoriteActivity] = useState("");
   const [profile, setProfile] = useState("");
   const [lastVaccinationDate, setLastVaccinationDate] = useState("");
 
-  const handlePickImage = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status === "granted") {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-      });
-
-      if (!result.canceled) {
-        setPhoto(result.uri);
-      }
-    } else {
-      Alert.alert(
-        "Permissão necessária",
-        "É necessário permitir o acesso à galeria."
-      );
-    }
-  };
-
-  const handleSave = () => {
+  const handleSave = async () => {
     if (
       name &&
       adoptionDate &&
@@ -52,11 +28,26 @@ export default function PetInfoScreen() {
       profile &&
       lastVaccinationDate
     ) {
-      Alert.alert(
-        "Informações salvas",
-        "As informações do pet foram salvas com sucesso!"
-      );
-      navigation.goBack(); // Navega de volta para a tela anterior
+      try {
+        const petData = {
+          name,
+          adoptionDate,
+          favoriteActivity,
+          profile,
+          lastVaccinationDate,
+        };
+        await AsyncStorage.setItem("petData", JSON.stringify(petData));
+
+        await AsyncStorage.setItem("showUpdateMessage", "true");
+
+        Alert.alert(
+          "Informações salvas",
+          "As informações do pet foram salvas com sucesso!"
+        );
+        navigation.navigate("Home");
+      } catch (error) {
+        Alert.alert("Erro", "Erro ao salvar os dados do pet.");
+      }
     } else {
       Alert.alert("Erro", "Preencha todos os campos.");
     }
@@ -66,17 +57,6 @@ export default function PetInfoScreen() {
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.innerContainer}>
         <Text style={styles.title}>Informações do Pet</Text>
-
-        <TouchableOpacity
-          style={styles.photoContainer}
-          onPress={handlePickImage}
-        >
-          {photo ? (
-            <Image source={{ uri: photo }} style={styles.photo} />
-          ) : (
-            <Text style={styles.photoText}>Escolha uma foto</Text>
-          )}
-        </TouchableOpacity>
 
         <TextInput
           style={styles.input}
@@ -145,52 +125,38 @@ const styles = StyleSheet.create({
     width: "100%",
     maxWidth: 400,
     alignItems: "center",
+    backgroundColor: "#ffffff",
+    borderRadius: 10,
+    padding: 20,
+    elevation: 5,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "white",
+    color: "#333333",
     textAlign: "center",
     marginBottom: 20,
-  },
-  photoContainer: {
-    width: "100%",
-    height: 200,
-    borderColor: "gray",
-    borderWidth: 1,
-    borderRadius: 10,
-    marginBottom: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#fff",
-  },
-  photo: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 10,
-  },
-  photoText: {
-    color: "#888",
-    fontSize: 16,
   },
   input: {
     height: 50,
     width: "100%",
-    borderColor: "gray",
+    borderColor: "#dddddd",
     borderWidth: 1,
     marginBottom: 15,
     paddingHorizontal: 15,
-    color: "#000", // Mudei a cor das letras para preto
     borderRadius: 5,
+    backgroundColor: "#f1f1f1",
+    color: "#333333",
   },
   picker: {
     height: 50,
     width: "100%",
-    borderColor: "gray",
+    borderColor: "#dddddd",
     borderWidth: 1,
     marginBottom: 15,
     borderRadius: 5,
-    color: "#000000", // Mantendo a cor branca para o picker
+    backgroundColor: "#f1f1f1",
+    color: "#333333",
   },
   button: {
     backgroundColor: "#4CAF50",
@@ -201,7 +167,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   buttonText: {
-    color: "white",
+    color: "#ffffff",
     fontSize: 16,
     fontWeight: "bold",
   },
